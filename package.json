@@ -14,7 +14,7 @@
     "@strapi/plugin-users-permissions": "4.5.1",
     "@strapi/strapi": "4.5.1",
     "pg": "8.6.0",
-    "strapi-provider-upload-ipfs": "file:strapi-provider-upload-ipfs-1.0.2.tgz"
+    "strapi-provider-upload-ipfs": "./providers/strapi-provider-upload-ipfs"
   },
   "author": {
     "name": "A Strapi developer"

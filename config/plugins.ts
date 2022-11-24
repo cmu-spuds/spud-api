@@ -5,7 +5,8 @@ module.exports = ({ env }) => ({
       provider: "strapi-provider-upload-ipfs",
       providerOptions: {
         grpc: env("IPFS_GRPC"),
-        http: env("IPFS_HTTP"),
+        http: env("IPFS_API_HTTP"),
+        gateway: env("IPFS_GATEWAY"),
       },
     },
   },

@@ -20,7 +20,8 @@ services:
       APP_KEYS: ${APP_KEYS}
       NODE_ENV: ${NODE_ENV}
       IPFS_GRPC: ${IPFS_GRPC}
-      IPFS_HTTP: ${IPFS_HTTP}
+      IPFS_API_HTTP: ${IPFS_API_HTTP}
+      IPFS_GATEWAY: ${IPFS_GATEWAY}
     volumes:
       - ./config:/opt/app/config
       - ./src:/opt/app/src
@@ -36,6 +37,7 @@ services:
       - strapi
     depends_on:
       - strapiDB
+      - ipfs
       
   strapiDB:
     container_name: strapiDB
@@ -50,7 +52,6 @@ services:
     volumes:
       - strapi-data:/var/lib/postgresql/data/ #using a volume
       #- ./data:/var/lib/postgresql/data/ # if you want to use a bind folder
-
     ports:
       - '5432:5432'
     networks:
@@ -62,15 +63,19 @@ services:
     restart: unless-stopped
     environment:
       - IPFS_PROFILE=server
+      # - IPFS_PATH=/data/ipfs
     volumes:
-      - strapi-data:/data/ipfs
+      - ipfs-data:/data/ipfs
+    networks:
+      - strapi
       # - ./data/ipfs:/data/ipfs
     # ports:
-    # - \"4001:4001\" # ipfs swarm - expose if needed/wanted
     # - '5001:5001' # ipfs api - expose if needed/wanted
     # - '8080:8080' # ipfs gateway - expose if needed/wanted
+
 volumes:
   strapi-data:
+  ipfs-data:
 
 networks:
   strapi:
