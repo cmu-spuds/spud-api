@@ -4,10 +4,12 @@ version: '3'
 services:
   strapi:
     container_name: strapi
-    build: .
+    build: 
+      context: .
+      dockerfile: Dockerfile.dev
     image: strapi:latest
     restart: unless-stopped
-    env_file: .env
+    env_file: dev.env
     environment:
       DATABASE_CLIENT: ${DATABASE_CLIENT}
       DATABASE_HOST: strapiDB
@@ -18,7 +20,7 @@ services:
       JWT_SECRET: ${JWT_SECRET}
       ADMIN_JWT_SECRET: ${ADMIN_JWT_SECRET}
       APP_KEYS: ${APP_KEYS}
-      NODE_ENV: ${NODE_ENV}
+      NODE_ENV: develop
       IPFS_GRPC: ${IPFS_GRPC}
       IPFS_API_HTTP: ${IPFS_API_HTTP}
       IPFS_GATEWAY: ${IPFS_GATEWAY}

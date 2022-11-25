@@ -1,0 +1,76 @@
+# path: ./docker-compose.yml
+
+version: '3'
+services:
+  strapi:
+    container_name: strapi
+    build: 
+      context: .
+      dockerfile: Dockerfile.prod
+    image: strapi:latest
+    restart: unless-stopped
+    env_file: prod.env
+    environment:
+      DATABASE_CLIENT: ${DATABASE_CLIENT}
+      DATABASE_HOST: strapiDB
+      DATABASE_PORT: ${DATABASE_PORT}
+      DATABASE_NAME: ${DATABASE_NAME}
+      DATABASE_USERNAME: ${DATABASE_USERNAME}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
+      ADMIN_JWT_SECRET: ${ADMIN_JWT_SECRET}
+      APP_KEYS: ${APP_KEYS}
+      NODE_ENV: production
+      IPFS_GRPC: ${IPFS_GRPC}
+      IPFS_API_HTTP: ${IPFS_API_HTTP}
+      IPFS_GATEWAY: ${IPFS_GATEWAY}
+    volumes:
+      - ./config:/opt/app/config
+      - ./src:/opt/app/src
+      - ./package.json:/opt/package.json
+      - ./yarn.lock:/opt/yarn.lock
+      - ./.env:/opt/app/.env
+      - ./public/uploads:/opt/app/public/uploads
+    ports:
+      - '1337:1337'
+    links:
+      - 'ipfs:ipfs'
+    networks:
+      - strapi
+    depends_on:
+      - strapiDB
+      - ipfs
+      
+  strapiDB:
+    container_name: strapiDB
+    platform: linux/amd64
+    restart: unless-stopped
+    env_file: .env
+    image: postgres:15.1-alpine
+    environment:
+      POSTGRES_USER: ${DATABASE_USERNAME}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_DB: ${DATABASE_NAME}
+    volumes:
+      - ./data/postgresql:/var/lib/postgresql/data/ # if you want to use a bind folder
+    networks:
+      - strapi
+
+  ipfs:
+    container_name: ipfs
+    image: ipfs/kubo:latest
+    restart: unless-stopped
+    environment:
+      - IPFS_PROFILE=server
+      - IPFS_PATH=/data/ipfs
+    volumes:
+      - ./data/ipfs:/data/ipfs
+    networks:
+      - strapi
+    ports:
+    - '8080:8080' # ipfs gateway
+
+networks:
+  strapi:
+    name: Strapi
+    driver: bridge
