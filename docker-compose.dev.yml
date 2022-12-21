@@ -1,6 +1,6 @@
 # path: ./docker-compose.yml
 
-version: '3'
+version: '3.7'
 services:
   strapi:
     container_name: strapi
@@ -9,7 +9,7 @@ services:
       dockerfile: Dockerfile.dev
     image: strapi:latest
     restart: unless-stopped
-    env_file: dev.env
+    env_file: ./dev.env
     environment:
       DATABASE_CLIENT: ${DATABASE_CLIENT}
       DATABASE_HOST: strapiDB
@@ -45,7 +45,7 @@ services:
     container_name: strapiDB
     platform: linux/amd64 #for platform error on Apple M1 chips
     restart: unless-stopped
-    env_file: .env
+    env_file: ./dev.env
     image: postgres:15.1-alpine
     environment:
       POSTGRES_USER: ${DATABASE_USERNAME}
@@ -71,6 +71,12 @@ services:
     networks:
       - strapi
       # - ./data/ipfs:/data/ipfs
+    # command: 
+    #   - config --json API.HTTPHeaders.Access-Control-Allow-Origin '["*"]'
+    #   - config --json API.HTTPHeaders.Access-Control-Allow-Methods '["GET", "POST"]'
+    #   - config --json API.HTTPHeaders.Access-Control-Allow-Headers '["Authorization"]'
+    #   - config --json API.HTTPHeaders.Access-Control-Expose-Headers '["Location"]'
+    #   - config --json API.HTTPHeaders.Access-Control-Allow-Credentials '["true"]'
     # ports:
     # - '5001:5001' # ipfs api - expose if needed/wanted
     # - '8080:8080' # ipfs gateway - expose if needed/wanted
