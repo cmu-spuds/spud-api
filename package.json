@@ -1,5 +1,5 @@
 {
-  "name": "meekapi",
+  "name": "spudapi",
   "private": true,
   "version": "0.1.0",
   "description": "A Strapi application",
@@ -10,11 +10,15 @@
     "strapi": "strapi"
   },
   "dependencies": {
-    "@strapi/plugin-i18n": "4.5.4",
-    "@strapi/plugin-users-permissions": "4.5.4",
-    "@strapi/strapi": "4.5.4",
-    "pg": "8.8.0",
-    "strapi-provider-upload-ipfs-client": "^1.1.2"
+    "@strapi/plugin-i18n": "4.21.0",
+    "@strapi/plugin-users-permissions": "4.21.0",
+    "@strapi/strapi": "4.21.0",
+    "pg": "^8.11.3",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^5.3.4",
+    "strapi-provider-upload-ipfs-client": "1.2.0",
+    "styled-components": "^5.3.11"
   },
   "author": {
     "name": "A Strapi developer"
@@ -23,8 +27,8 @@
     "uuid": "e5d9f932-fe42-4e01-86a0-521c814cc691"
   },
   "engines": {
-    "node": ">=14.19.1 <=18.x.x",
-    "npm": ">=6.0.0"
+    "node": ">=20.x.x",
+    "npm": ">=10.0.0"
   },
   "license": "MIT"
 }
